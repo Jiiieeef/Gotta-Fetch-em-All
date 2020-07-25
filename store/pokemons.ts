@@ -1,5 +1,6 @@
-import { Commit } from 'vuex';
+import { Commit , ActionTree, GetterTree, MutationTree } from 'vuex';
 
+import { RootState } from '.';
 import { IPokemonsState, IPokemonListResult } from '~/entities/interfaces';
 import { Pokemon } from '~/entities/pokemon';
 
@@ -10,12 +11,12 @@ export const state = (): IPokemonsState => ({
   nextUrl: ''
 });
 
-export const getters = {
+export const getters: GetterTree<IPokemonsState, RootState> = {
   getPokemons: (state: IPokemonsState) => state.pokemons,
   allPokemonArefetch: (state: IPokemonsState) => state.pokemons.length === state.count
 };
 
-export const actions = {
+export const actions: ActionTree<IPokemonsState, RootState>  = {
   async fetchPokemons({ state, commit }: { state: IPokemonsState, commit: Commit }) {
     const result = state.nextUrl
       ? await this.$axios.$get(state.nextUrl)
@@ -32,7 +33,7 @@ export const actions = {
   }
 };
 
-export const mutations = {
+export const mutations: MutationTree<IPokemonsState> = {
   SET_COUNT(state: IPokemonsState, count: number) {
     state.count = count;
   },
