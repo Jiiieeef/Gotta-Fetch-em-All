@@ -61,10 +61,6 @@ export default {
 
   destroyed() {
     document.removeEventListener('scroll', this.onScroll);
-  },
-
-  created() {
-    this.loadMorePokemons();
   }
 }
 </script>
