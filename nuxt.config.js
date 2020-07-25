@@ -67,5 +67,9 @@ export default {
   ** See https://nuxtjs.org/api/configuration-build/
   */
   build: {
+  },
+
+  env: {
+    API_BASE_URL: 'https://pokeapi.co/api/v2'
   }
 }

@@ -11,5 +11,8 @@ module.exports = {
   plugins: [
   ],
   // add your custom rules here
-  rules: {}
+  rules: {
+    semi: 'always',
+    'space-before-function-paren': 'never'
+  }
 }
