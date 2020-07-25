@@ -8,7 +8,7 @@
         <div class="value" :style="{width: `${gender}%`}"></div>
       </div>
     </b-tooltip>
-    <span v-else>Genderless</span>
+    <span v-else class="genderless">Genderless</span>
   </div>
 </template>
 
