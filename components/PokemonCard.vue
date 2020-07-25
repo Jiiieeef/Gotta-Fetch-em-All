@@ -12,10 +12,8 @@
             <img :src="pokemon.frontImage">
           </figure>
         </div>
-        <div class="media-content">
-          <ul>
-            <li v-for="(type, index) in pokemon.types" :key="`type-${index}`">{{ type }}</li>
-          </ul>
+        <div class="media-content types">
+          <TagType v-for="(type, index) in pokemon.types" :key="`type-${index}`" :type="type" />
         </div>
       </div>
 
@@ -24,8 +22,14 @@
 </template>
 
 <script>
+import TagType from './TagType';
+
 export default {
   name: 'PokemonCard',
+
+  components: {
+    TagType
+  },
 
   props: {
     pokemon: {
@@ -34,3 +38,10 @@ export default {
   }
 }
 </script>
+
+
+<style>
+  .types .type:not(:last-child) {
+    margin-right: 5px;
+  }
+</style>
