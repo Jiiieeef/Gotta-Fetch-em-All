@@ -1,3 +1,5 @@
+const GENDER_RATE = 8;
+
 export class PokemonSpecies {
   isBaby: boolean;
   descriptions: any[];
@@ -11,6 +13,20 @@ export class PokemonSpecies {
     this.genderRate = json.genderRate;
     this.generation = json.generation;
     this.evolutionChain = json.evolutionChain;
+  }
+
+  /**
+   * Return the percentage of chance for a pokémon to be female.
+   * If the rate is -1, then the pokémon is genderless and return false.
+   *
+   * @returns {Boolean | Number}
+   */
+  getGenderPercentage(): boolean | number {
+    if (this.genderRate === - 1) {
+      return false;
+    }
+
+    return this.genderRate / GENDER_RATE * 100;
   }
 
   static fromJson(json: any): PokemonSpecies {

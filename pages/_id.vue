@@ -4,7 +4,7 @@
     <PokeballLoader v-if="!species" />
     <div v-else>
       <div>{{ species.descriptions && species.descriptions[0].flavor_text }} </div>
-      <div>{{ species.genderRate }}</div>
+      <GenderBar :gender="species.getGenderPercentage()" />
       <div>{{ species.isBaby }}</div>
       <div>{{ species.generation }}</div>
       <div>{{ species.evolution_chain }}</div>
@@ -15,10 +15,12 @@
 <script>
 import PokemonCard from '~/components/PokemonCard.vue';
 import PokeballLoader from '~/components/PokeballLoader.vue';
+import GenderBar from '~/components/GenderBar.vue';
 
 export default {
   components: {
-    PokeballLoader
+    PokeballLoader,
+    GenderBar
   },
 
   data() {
@@ -34,11 +36,12 @@ export default {
 
   async created() {
     this.species = await this.$store.dispatch('pokemons/fetchPokemonSpecies', this.pokemon.id);
-    console.log(this.species)
   }
 }
 </script>
 
 <style>
-
+  .gender-bar-container {
+    width: 100px;
+  }
 </style>
