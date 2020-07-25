@@ -11,7 +11,8 @@ export const state = (): IPokemonsState => ({
 });
 
 export const getters = {
-  getPokemons: (state: IPokemonsState) => state.pokemons
+  getPokemons: (state: IPokemonsState) => state.pokemons,
+  allPokemonArefetch: (state: IPokemonsState) => state.pokemons.length === state.count
 };
 
 export const actions = {

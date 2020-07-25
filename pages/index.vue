@@ -37,13 +37,22 @@ export default {
 
   computed: {
     ...mapGetters({
-      pokemons: 'pokemons/getPokemons'
-    })
+      pokemons: 'pokemons/getPokemons',
+      allPokemonArefetch: 'pokemons/allPokemonArefetch'
+    }),
+
+    preventLoadingMorePokemon() {
+      return this.allPokemonArefetch || this.isLoading;
+    }
   },
 
   methods: {
     onScroll() {
-      if (!this.isLoading && (window.innerHeight + window.scrollY) >= (document.body.offsetHeight - SCROLL_OFFSET)) {
+      if (this.preventLoadingMorePokemon) {
+        return;
+      }
+
+      if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - SCROLL_OFFSET)) {
         this.loadMorePokemons();
       }
     },
