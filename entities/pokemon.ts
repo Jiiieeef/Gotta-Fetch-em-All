@@ -17,6 +17,6 @@ export class Pokemon {
       name: json.name,
       frontImage: json.sprites.front_default,
       types: json.types.map((type: any) => type.type.name)
-    })
+    });
   }
 }

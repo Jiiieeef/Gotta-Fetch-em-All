@@ -3,6 +3,7 @@ import { Commit , ActionTree, GetterTree, MutationTree } from 'vuex';
 import { RootState } from '.';
 import { IPokemonsState, IPokemonListResult } from '~/entities/interfaces';
 import { Pokemon } from '~/entities/pokemon';
+import { PokemonSpecies } from '~/entities/pokemonSpecies';
 
 export const state = (): IPokemonsState => ({
   pokemons: [],
@@ -30,6 +31,18 @@ export const actions: ActionTree<IPokemonsState, RootState>  = {
     const pokemonsResult = await Promise.all(pokemonsPromises);
 
     commit('ADD_POKEMONS', pokemonsResult);
+  },
+
+  async fetchPokemon({ }, pokemonId: number) {
+    const pokemon = await this.$axios.$get(`${process.env.API_BASE_URL}/pokemon/${pokemonId}`);
+
+    return Pokemon.fromJson(pokemon);
+  },
+
+  async fetchPokemonSpecies({ }, pokemonId: number) {
+    const species = await this.$axios.$get(`${process.env.API_BASE_URL}/pokemon-species/${pokemonId}`);
+
+    return PokemonSpecies.fromJson(species);
   }
 };
 

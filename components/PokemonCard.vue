@@ -1,8 +1,8 @@
 <template>
-  <div class="card">
+  <div class="card" @click="goToPokemonDetail()">
     <header class="card-header">
       <p class="card-header-title">
-        {{ pokemon.id }} {{ pokemon.name }}
+        {{ pokemon.name }} ({{ pokemon.id }})
       </p>
     </header>
     <div class="card-content">
@@ -35,13 +35,33 @@ export default {
     pokemon: {
       required: true
     }
+  },
+
+  methods: {
+    goToPokemonDetail() {
+      this.$router.push({
+        path: `/${this.pokemon.id}`
+      });
+    }
   }
 }
 </script>
 
+<style lang="scss" scoped>
+  .card {
+    cursor: pointer;
+    transition: box-shadow 0.5s ease;
 
-<style>
-  .types .type:not(:last-child) {
-    margin-right: 5px;
+    &:hover {
+      box-shadow: 0 10px 13px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+    }
+
+    .card-header-title {
+      text-transform: capitalize;
+    }
+
+    .types .type:not(:last-child) {
+      margin-right: 5px;
+    }
   }
 </style>

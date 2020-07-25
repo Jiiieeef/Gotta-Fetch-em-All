@@ -25,7 +25,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   span {
     border-radius: 3px;
     padding: 3px 5px;
