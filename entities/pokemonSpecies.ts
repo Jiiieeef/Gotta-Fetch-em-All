@@ -36,6 +36,6 @@ export class PokemonSpecies {
       genderRate: json.gender_rate,
       generation: json.generation.name,
       evolutionChain: json.evolution_chain
-    })
+    });
   }
 }
