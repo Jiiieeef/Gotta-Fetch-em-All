@@ -1,12 +1,12 @@
 <template>
-  <section class="section" >
-    <div class="columns is-multiline">
+  <section class="section">
+    <transition-group name="slide-fade" tag="div" class="columns is-multiline">
       <div v-for="pokemon in pokemons" :key="pokemon.id"
         class="column is-4-desktop is-3-widescreen is-half-tablet"
       >
         <PokemonCard :pokemon="pokemon" />
       </div>
-    </div>
+    </transition-group>
 
     <div class="loader-container" v-if="isLoading" >
       <PokeballLoader />
@@ -78,5 +78,14 @@ export default {
   .loader-container {
     display: flex;
     justify-content: center;
+  }
+
+  .slide-fade-enter-active {
+    transition: all .3s ease;
+  }
+
+  .slide-fade-enter, .slide-fade-leave-to {
+    transform: translateX(10px);
+    opacity: 0;
   }
 </style>
