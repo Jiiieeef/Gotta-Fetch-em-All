@@ -17,7 +17,8 @@
       <div class="media">
         <div class="media-left">
           <figure class="image is-96x96">
-            <img :src="pokemon.frontImage">
+            <img v-if="pokemon.frontImage" :src="pokemon.frontImage" :alt="`${pokemon.name} front image`">
+            <img v-else src="~assets/missigno.png" :alt="`${pokemon.name} front image`" :title="`No front image for ${pokemon.name}`">
           </figure>
         </div>
         <div class="media-content types">
