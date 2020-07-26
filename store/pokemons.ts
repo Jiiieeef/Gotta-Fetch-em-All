@@ -33,16 +33,27 @@ export const actions: ActionTree<IPokemonsState, RootState>  = {
     commit('ADD_POKEMONS', pokemonsResult);
   },
 
-  async fetchPokemon({ }, pokemonId: number) {
+  async fetchPokemon(context, pokemonId: number) {
     const pokemon = await this.$axios.$get(`${process.env.API_BASE_URL}/pokemon/${pokemonId}`);
 
     return Pokemon.fromJson(pokemon);
   },
 
-  async fetchPokemonSpecies({ }, pokemonId: number) {
+  async fetchPokemonSpecies({ dispatch }, pokemonId: number) {
     const species = await this.$axios.$get(`${process.env.API_BASE_URL}/pokemon-species/${pokemonId}`);
+    const evolutionChain = await dispatch('fetchEvolutionChain', species.evolution_chain.url);
+    const pokemon = PokemonSpecies.fromJson({
+      ...species,
+      evolution_chain: evolutionChain
+    });
 
-    return PokemonSpecies.fromJson(species);
+    return pokemon;
+  },
+
+  async fetchEvolutionChain(context, evolutionChainUrl: string) {
+    const evolutionChain = await this.$axios.$get(evolutionChainUrl);
+
+    return PokemonSpecies.evolutionChainParser(evolutionChain);
   }
 };
 

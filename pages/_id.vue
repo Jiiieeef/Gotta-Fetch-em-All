@@ -7,7 +7,7 @@
       <GenderBar :gender="species.getGenderPercentage()" />
       <div>{{ species.isBaby }}</div>
       <div>{{ species.generation }}</div>
-      <div>{{ species.evolution_chain }}</div>
+      <div>{{ species.evolutionChain }}</div>
     </div>
   </div>
 </template>

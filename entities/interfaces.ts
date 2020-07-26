@@ -11,3 +11,12 @@ export interface IPokemonListResult {
   name: string;
   url: string;
 }
+
+export interface IEvolutionChain {
+  species: {
+    name: string;
+    url: string;
+  };
+  isBaby: boolean;
+  evolveTo: IEvolutionChain[];
+}
