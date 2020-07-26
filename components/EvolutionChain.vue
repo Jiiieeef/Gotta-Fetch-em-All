@@ -48,4 +48,8 @@ export default {
   li.hasEvolution ul {
     margin-left: 5px;
   }
+
+  .card {
+    margin-bottom: 15px;
+  }
 </style>

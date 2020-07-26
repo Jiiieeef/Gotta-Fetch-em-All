@@ -1,9 +1,17 @@
 <template>
-  <div class="card" @click="goToPokemonDetail()">
+  <div class="card" :class="{isFocusedPokemon}" @click="!isFocusedPokemon && goToPokemonDetail()">
     <header class="card-header">
       <p class="card-header-title">
         {{ pokemon.name }} ({{ pokemon.id }})
       </p>
+
+      <span class="card-header-icon" aria-label="more options" v-if="isFocusedPokemon && species.isBaby">
+        <b-tooltip :label="`${pokemon.name} is a baby.`" type="is-black">
+          <span class="icon">
+            🥚
+          </span>
+        </b-tooltip>
+      </span>
     </header>
     <div class="card-content">
       <div class="media">
@@ -13,27 +21,65 @@
           </figure>
         </div>
         <div class="media-content types">
+          <p v-if="isFocusedPokemon">{{ description }}</p>
+
           <TagType v-for="(type, index) in pokemon.types" :key="`type-${index}`" :type="type" />
         </div>
       </div>
 
     </div>
+    <footer class="card-footer" v-if="isFocusedPokemon">
+      <div class="card-footer-item">
+        <GenderBar :gender="species.getGenderPercentage()" />
+      </div>
+      <div class="card-footer-item">{{ generation }}</div>
+    </footer>
   </div>
 </template>
 
 <script>
 import TagType from './TagType';
+import GenderBar from './GenderBar.vue';
+
+import GENERATIONS from '~/entities/generations';
+
 
 export default {
   name: 'PokemonCard',
 
   components: {
-    TagType
+    TagType,
+    GenderBar,
   },
 
   props: {
     pokemon: {
       required: true
+    },
+    species: {
+      required: false
+    },
+    isFocusedPokemon: {
+      require: false,
+      type: Boolean
+    },
+  },
+
+  computed: {
+    description() {
+      if (!this.isFocusedPokemon) {
+        return '';
+      }
+      const description = this.species.descriptions.find(desc => desc.language.name === 'en');
+      return description ? description.flavor_text : '';
+    },
+
+    generation() {
+      if (!this.isFocusedPokemon) {
+        return '';
+      }
+      const genration = GENERATIONS[this.species.generation];
+      return `Generation ${genration.id} - ${genration.region}`;
     }
   },
 
@@ -48,7 +94,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .card {
+  .card:not(.isFocusedPokemon) {
     cursor: pointer;
     transition: box-shadow 0.5s ease;
 
