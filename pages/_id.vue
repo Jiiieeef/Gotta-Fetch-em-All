@@ -3,7 +3,7 @@
     <div>{{ pokemon.name }} - {{ pokemon.id }}</div>
     <PokeballLoader v-if="!species" />
     <div v-else>
-      <div>{{ species.descriptions && species.descriptions[0].flavor_text }} </div>
+      <div>{{ description }}</div>
       <GenderBar :gender="species.getGenderPercentage()" />
       <div>{{ species.isBaby }}</div>
       <div>{{ species.generation }}</div>
@@ -38,6 +38,13 @@ export default {
     return {
       species: undefined
     };
+  },
+
+  computed: {
+    description() {
+      const description = this.species.descriptions.find(desc => desc.language.name === 'en');
+      return description ? description.flavor_text : '';
+    }
   },
 
   async asyncData({ route, store }) {
