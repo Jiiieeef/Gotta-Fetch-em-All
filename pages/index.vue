@@ -1,5 +1,12 @@
 <template>
   <section class="section">
+    <b-field label="Search by name or ID">
+      <b-input type="search" icon="magnify" v-model="search"></b-input>
+    </b-field>
+    <p v-if="search && !pokemons.length">
+      No pokémons correspondig to '{{ search }}'.
+      <a href="#" class="manual-load-more-pokemons" v-if="!preventLoadingMorePokemon" @click="loadMorePokemons">Load more pokémons</a>
+    </p>
     <transition-group name="slide-fade" tag="div" class="columns is-multiline">
       <div v-for="pokemon in pokemons" :key="pokemon.id"
         class="column is-4-desktop is-3-widescreen is-half-tablet"
@@ -43,6 +50,16 @@ export default {
 
     preventLoadingMorePokemon() {
       return this.allPokemonArefetch || this.isLoading;
+    },
+
+    search: {
+      set(searchFilter) {
+        this.$store.commit('pokemons/SET_SEARCH_FILTER', searchFilter);
+      },
+
+      get() {
+        return this.$store.getters['pokemons/searchFilter'];
+      },
     }
   },
 
@@ -88,4 +105,10 @@ export default {
     transform: translateX(10px);
     opacity: 0;
   }
+
+  .manual-load-more-pokemons {
+    font-weight: bold;
+    cursor: pointer;
+  }
+
 </style>

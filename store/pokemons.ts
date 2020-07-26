@@ -9,12 +9,24 @@ export const state = (): IPokemonsState => ({
   pokemons: [],
   count: 0,
   limit: 100,
-  nextUrl: ''
+  nextUrl: '',
+  searchFilter: ''
 });
 
 export const getters: GetterTree<IPokemonsState, RootState> = {
-  getPokemons: (state: IPokemonsState) => state.pokemons,
-  allPokemonArefetch: (state: IPokemonsState) => state.pokemons.length === state.count
+  getPokemons: (state: IPokemonsState) => {
+    if (!state.searchFilter) {
+      return state.pokemons;
+    }
+
+    const searchFilter = state.searchFilter.toLowerCase();
+    return state.pokemons.filter((pokemon: Pokemon) =>
+      pokemon.name.toLowerCase().includes(searchFilter)
+      || pokemon.id.toString().includes(searchFilter)
+    );
+  },
+  allPokemonArefetch: (state: IPokemonsState) => state.pokemons.length === state.count,
+  searchFilter: (state: IPokemonsState) => state.searchFilter
 };
 
 export const actions: ActionTree<IPokemonsState, RootState>  = {
@@ -75,5 +87,9 @@ export const mutations: MutationTree<IPokemonsState> = {
   ADD_POKEMONS(state: IPokemonsState, pokemons: any[]) {
     const pkmns = pokemons.map(pkmn => Pokemon.fromJson(pkmn));
     state.pokemons.push(...pkmns);
+  },
+
+  SET_SEARCH_FILTER(state: IPokemonsState, searchFilter: string) {
+    state.searchFilter = searchFilter;
   }
 };

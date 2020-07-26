@@ -5,6 +5,7 @@ export interface IPokemonsState {
   count: number;
   limit: number;
   nextUrl: string;
+  searchFilter: string;
 }
 
 export interface IPokemonListResult {
