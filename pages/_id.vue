@@ -8,6 +8,14 @@
       <div>{{ species.isBaby }}</div>
       <div>{{ species.generation }}</div>
       <div>{{ species.evolutionChain }}</div>
+
+      <div>
+        <ul>
+          <EvolutionChain
+            :evolutionChain="species.evolutionChain"
+          />
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -16,11 +24,13 @@
 import PokemonCard from '~/components/PokemonCard.vue';
 import PokeballLoader from '~/components/PokeballLoader.vue';
 import GenderBar from '~/components/GenderBar.vue';
+import EvolutionChain from '~/components/EvolutionChain.vue';
 
 export default {
   components: {
     PokeballLoader,
-    GenderBar
+    GenderBar,
+    EvolutionChain
   },
 
   data() {
