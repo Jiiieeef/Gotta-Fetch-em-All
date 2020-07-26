@@ -10,23 +10,27 @@ export const state = (): IPokemonsState => ({
   count: 0,
   limit: 100,
   nextUrl: '',
-  searchFilter: ''
+  searchFilter: '',
+  selectedTypes: []
 });
 
 export const getters: GetterTree<IPokemonsState, RootState> = {
   getPokemons: (state: IPokemonsState) => {
-    if (!state.searchFilter) {
+    if (!state.searchFilter && !state.selectedTypes.length) {
       return state.pokemons;
     }
 
     const searchFilter = state.searchFilter.toLowerCase();
     return state.pokemons.filter((pokemon: Pokemon) =>
-      pokemon.name.toLowerCase().includes(searchFilter)
-      || pokemon.id.toString().includes(searchFilter)
+      (
+        pokemon.name.toLowerCase().includes(searchFilter)
+        || pokemon.id.toString().includes(searchFilter)
+      ) && state.selectedTypes.every((type: string) => pokemon.types.includes(type))
     );
   },
   allPokemonArefetch: (state: IPokemonsState) => state.pokemons.length === state.count,
-  searchFilter: (state: IPokemonsState) => state.searchFilter
+  searchFilter: (state: IPokemonsState) => state.searchFilter,
+  selectedTypes: (state: IPokemonsState) => state.selectedTypes
 };
 
 export const actions: ActionTree<IPokemonsState, RootState>  = {
@@ -91,5 +95,9 @@ export const mutations: MutationTree<IPokemonsState> = {
 
   SET_SEARCH_FILTER(state: IPokemonsState, searchFilter: string) {
     state.searchFilter = searchFilter;
+  },
+
+  SET_SELECTED_TYPES(state: IPokemonsState, selectedTypes: string[]) {
+    state.selectedTypes = [...selectedTypes];
   }
 };
