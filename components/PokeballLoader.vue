@@ -11,7 +11,7 @@ export default {
 </script>
 
 <style>
-/* Poké Styles */
+/* Source: https://codepen.io/raubaca/pen/obaZmG */
 .pokeball {
   position: relative;
   width: 200px;
