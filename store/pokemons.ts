@@ -39,13 +39,19 @@ export const actions: ActionTree<IPokemonsState, RootState>  = {
     return Pokemon.fromJson(pokemon);
   },
 
-  async fetchPokemonSpecies({ dispatch }, pokemonId: number) {
+  async fetchPokemonSpecies({ dispatch }, { pokemonId, fetchEvolution }: { pokemonId: number | string, fetchEvolution: boolean}) {
     const species = await this.$axios.$get(`${process.env.API_BASE_URL}/pokemon-species/${pokemonId}`);
-    const evolutionChain = await dispatch('fetchEvolutionChain', species.evolution_chain.url);
-    const pokemon = PokemonSpecies.fromJson({
-      ...species,
-      evolution_chain: evolutionChain
-    });
+    let json = species;
+
+    if (fetchEvolution) {
+      const evolutionChain = await dispatch('fetchEvolutionChain', species.evolution_chain.url);
+      json = {
+        ...json,
+        evolution_chain: evolutionChain
+      };
+    }
+
+    const pokemon = PokemonSpecies.fromJson(json);
 
     return pokemon;
   },

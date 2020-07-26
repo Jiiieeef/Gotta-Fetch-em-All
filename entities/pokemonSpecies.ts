@@ -3,6 +3,7 @@ import { IEvolutionChain } from './interfaces';
 const GENDER_RATE = 8;
 
 export class PokemonSpecies {
+  id: number;
   name: string;
   isBaby: boolean;
   descriptions: any[];
@@ -11,6 +12,7 @@ export class PokemonSpecies {
   evolutionChain: IEvolutionChain[];
 
   constructor(json: any) {
+    this.id = json.id;
     this.name = json.name;
     this.isBaby = json.isBaby;
     this.descriptions = json.descriptions;
@@ -35,6 +37,7 @@ export class PokemonSpecies {
 
   static fromJson(json: any): PokemonSpecies {
     return new PokemonSpecies({
+      id: json.id,
       name: json.name,
       isBaby: json.is_baby,
       descriptions: json.flavor_text_entries,

@@ -7,12 +7,13 @@
       <GenderBar :gender="species.getGenderPercentage()" />
       <div>{{ species.isBaby }}</div>
       <div>{{ species.generation }}</div>
-      <div>{{ species.evolutionChain }}</div>
 
-      <div>
+      <div v-if="species.evolutionChain">
+        Evolution chain {{ species.evolutionChain.species.name.toUpperCase() }}'s
         <ul>
           <EvolutionChain
             :evolutionChain="species.evolutionChain"
+            :currentPokemon="pokemon"
           />
         </ul>
       </div>
@@ -45,7 +46,7 @@ export default {
   },
 
   async created() {
-    this.species = await this.$store.dispatch('pokemons/fetchPokemonSpecies', this.pokemon.id);
+    this.species = await this.$store.dispatch('pokemons/fetchPokemonSpecies', {pokemonId: this.pokemon.id, fetchEvolution: true});
   }
 }
 </script>
