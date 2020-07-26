@@ -3,9 +3,10 @@
     <b-tooltip
       v-if="gender"
       :label="tooltipText"
-      type="is-black">
+      type="is-black"
+    >
       <div class="gender-bar-container">
-        <div class="value" :style="{width: `${gender}%`}"></div>
+        <div class="value" :style="{width: `${gender}%`}" />
       </div>
     </b-tooltip>
     <span v-else class="genderless">Genderless</span>
@@ -27,8 +28,8 @@ export default {
     tooltipText() {
       return `Male: ${100 - this.gender}% - Female: ${this.gender}%`;
     }
-  },
-}
+  }
+};
 </script>
 
 <style lang="scss">

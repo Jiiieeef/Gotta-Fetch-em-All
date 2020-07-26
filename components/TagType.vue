@@ -19,10 +19,10 @@ export default {
 
   data() {
     return {
-      TYPES_COLOR_MAPPING: TYPES_COLOR_MAPPING
+      TYPES_COLOR_MAPPING
     };
   }
-}
+};
 </script>
 
 <style scoped>

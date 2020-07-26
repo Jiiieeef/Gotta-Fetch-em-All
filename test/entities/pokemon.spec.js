@@ -7,10 +7,10 @@ describe('Pokemon', () => {
         id: 123,
         name: 'Insécateur',
         types: [
-          {type: {name: 'Insecte'}},
-          {type: {name: 'Vol'}}
+          { type: { name: 'Insecte' } },
+          { type: { name: 'Vol' } }
         ],
-        sprites: {front_default: ''}
+        sprites: { front_default: '' }
       });
 
       expect(pokemon).toBeInstanceOf(Pokemon);

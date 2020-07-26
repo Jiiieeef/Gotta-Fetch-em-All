@@ -5,7 +5,7 @@
         {{ pokemon.name }} ({{ pokemon.id }})
       </p>
 
-      <span class="card-header-icon" aria-label="more options" v-if="isFocusedPokemon && species.isBaby">
+      <span v-if="isFocusedPokemon && species.isBaby" class="card-header-icon">
         <b-tooltip :label="`${pokemon.name} is a baby.`" type="is-black">
           <span class="icon">
             🥚
@@ -22,18 +22,21 @@
           </figure>
         </div>
         <div class="media-content types">
-          <p v-if="isFocusedPokemon">{{ description }}</p>
+          <p v-if="isFocusedPokemon">
+            {{ description }}
+          </p>
 
           <TagType v-for="(type, index) in pokemon.types" :key="`type-${index}`" :type="type" />
         </div>
       </div>
-
     </div>
-    <footer class="card-footer" v-if="isFocusedPokemon">
+    <footer v-if="isFocusedPokemon" class="card-footer">
       <div class="card-footer-item">
         <GenderBar :gender="species.getGenderPercentage()" />
       </div>
-      <div class="card-footer-item">{{ generation }}</div>
+      <div class="card-footer-item">
+        {{ generation }}
+      </div>
     </footer>
   </div>
 </template>
@@ -44,26 +47,28 @@ import GenderBar from './GenderBar.vue';
 
 import GENERATIONS from '~/entities/generations';
 
-
 export default {
   name: 'PokemonCard',
 
   components: {
     TagType,
-    GenderBar,
+    GenderBar
   },
 
   props: {
     pokemon: {
-      required: true
+      required: true,
+      type: Object
     },
     species: {
-      required: false
+      required: false,
+      default: () => {},
+      type: Object
     },
     isFocusedPokemon: {
       require: false,
       type: Boolean
-    },
+    }
   },
 
   computed: {
@@ -91,7 +96,7 @@ export default {
       });
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

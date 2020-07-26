@@ -1,6 +1,5 @@
-import { mount } from '@vue/test-utils'
+import { mount } from '@vue/test-utils';
 import GenderBar from '~/components/GenderBar.vue';
-
 
 describe('GenderBar', () => {
   describe('Genderless', () => {

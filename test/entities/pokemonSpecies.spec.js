@@ -9,7 +9,7 @@ describe('PokemonSpecies', () => {
         is_baby: false,
         flavor_text_entries: [],
         gender_rate: 2,
-        generation: {name: 'generation-i'},
+        generation: { name: 'generation-i' },
         evolution_chain: []
       });
 
@@ -45,7 +45,7 @@ describe('PokemonSpecies', () => {
         is_baby: false,
         flavor_text_entries: [],
         gender_rate: -1,
-        generation: {name: 'generation-i'},
+        generation: { name: 'generation-i' },
         evolution_chain: []
       });
 
@@ -58,7 +58,7 @@ describe('PokemonSpecies', () => {
         is_baby: false,
         flavor_text_entries: [],
         gender_rate: 2,
-        generation: {name: 'generation-i'},
+        generation: { name: 'generation-i' },
         evolution_chain: []
       });
 
@@ -70,7 +70,7 @@ describe('PokemonSpecies', () => {
         is_baby: false,
         flavor_text_entries: [],
         gender_rate: 8,
-        generation: {name: 'generation-i'},
+        generation: { name: 'generation-i' },
         evolution_chain: []
       });
 

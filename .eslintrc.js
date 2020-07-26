@@ -12,7 +12,7 @@ module.exports = {
   ],
   // add your custom rules here
   rules: {
-    semi: 'always',
-    'space-before-function-paren': 'never'
+    semi: [2, 'always'],
+    'space-before-function-paren': [1, 'never']
   }
-}
+};

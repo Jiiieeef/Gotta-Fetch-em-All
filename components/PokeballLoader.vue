@@ -1,13 +1,13 @@
 <template>
   <div class="pokeball">
-    <div class="pokeball__button"></div>
+    <div class="pokeball__button" />
   </div>
 </template>
 
 <script>
 export default {
   name: 'PokeballLoader'
-}
+};
 </script>
 
 <style>

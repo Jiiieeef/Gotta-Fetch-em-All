@@ -1,12 +1,18 @@
 <template>
   <section class="section">
     <b-field label="Search by name or ID">
-      <b-input type="search" icon="magnify" v-model="search"></b-input>
+      <b-input v-model="search" type="search" icon="magnify" />
     </b-field>
 
     <b-field label="Select types (only two types can be selected at once)">
       <div class="types-container">
-        <span class="type" :class="{selected: selectedTypes.includes(type)}" v-for="type in types" :key="type" @click="onClickType(type)">
+        <span
+          v-for="type in types"
+          :key="type"
+          :class="{selected: selectedTypes.includes(type)}"
+          class="type"
+          @click="onClickType(type)"
+        >
           <TagType :type="type" />
         </span>
       </div>
@@ -14,18 +20,20 @@
 
     <p v-if="(search || selectedTypes.length) && !pokemons.length">
       No pokémons correspondig to your research.
-      <a href="#" class="manual-load-more-pokemons" v-if="!preventLoadingMorePokemon" @click="loadMorePokemons">Load more pokémons</a>
+      <a v-if="!preventLoadingMorePokemon" href="#" class="manual-load-more-pokemons" @click="loadMorePokemons">Load more pokémons</a>
     </p>
 
     <transition-group name="slide-fade" tag="div" class="columns is-multiline">
-      <div v-for="pokemon in pokemons" :key="pokemon.id"
+      <div
+        v-for="pokemon in pokemons"
+        :key="pokemon.id"
         class="column is-4-desktop is-3-widescreen is-half-tablet"
       >
         <PokemonCard :pokemon="pokemon" />
       </div>
     </transition-group>
 
-    <div class="loader-container" v-if="isLoading" >
+    <div v-if="isLoading" class="loader-container">
       <PokeballLoader />
     </div>
   </section>
@@ -37,22 +45,21 @@ import { mapGetters } from 'vuex';
 import PokemonCard from '~/components/PokemonCard.vue';
 import PokeballLoader from '~/components/PokeballLoader.vue';
 import TYPES_COLOR_MAPPING from '~/entities/typesColors';
-import TagType from '~/components/TagType.vue';
 
 const SCROLL_OFFSET = 500;
 
 export default {
   name: 'HomePage',
 
+  components: {
+    PokemonCard,
+    PokeballLoader
+  },
+
   data() {
     return {
       isLoading: false
     };
-  },
-
-  components: {
-    PokemonCard,
-    PokeballLoader
   },
 
   computed: {
@@ -72,7 +79,7 @@ export default {
 
       get() {
         return this.$store.getters['pokemons/searchFilter'];
-      },
+      }
     },
 
     selectedTypes() {
@@ -82,6 +89,14 @@ export default {
     types() {
       return Object.keys(TYPES_COLOR_MAPPING);
     }
+  },
+
+  mounted() {
+    document.addEventListener('scroll', this.onScroll);
+  },
+
+  destroyed() {
+    document.removeEventListener('scroll', this.onScroll);
   },
 
   methods: {
@@ -116,16 +131,8 @@ export default {
 
       this.$store.commit('pokemons/SET_SELECTED_TYPES', selectedTypes);
     }
-  },
-
-  mounted() {
-    document.addEventListener('scroll', this.onScroll);
-  },
-
-  destroyed() {
-    document.removeEventListener('scroll', this.onScroll);
   }
-}
+};
 </script>
 
 <style lang="scss">
