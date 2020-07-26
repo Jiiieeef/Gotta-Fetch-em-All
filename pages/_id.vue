@@ -5,7 +5,7 @@
     </div>
     <div class="columns" v-else>
       <div class="column is-7">
-        <PokemonCard :pokemon="pokemon" :species="species" :isFocusedPokemon="true" />
+        <PokemonCard :pokemon="pokemon" :species="species" :isFocusedPokemon="shouldShowMoreInfo" />
       </div>
       <div class="column is-5">
         <div v-if="species && species.evolutionChain">
@@ -34,19 +34,38 @@ export default {
 
   data() {
     return {
-      species: undefined,
+      species: {},
       loading: false
     };
   },
 
-  async asyncData({ route, store }) {
-    const pokemon = await store.dispatch('pokemons/fetchPokemon', route.params.id);
-    return { pokemon };
+  computed: {
+    shouldShowMoreInfo() {
+      return !!Object.keys(this.species).length;
+    }
+  },
+
+  async asyncData({ route, store, error }) {
+    try {
+      const pokemon = await store.dispatch('pokemons/fetchPokemon', route.params.id);
+      return { pokemon };
+    } catch(err) {
+      error({ statusCode: 404, message: 'Pokémon not found' });
+    }
   },
 
   async created() {
     this.loading = true;
-    this.species = await this.$store.dispatch('pokemons/fetchPokemonSpecies', {pokemonId: this.pokemon.id, fetchEvolution: true});
+    try {
+      this.species = await this.$store.dispatch('pokemons/fetchPokemonSpecies', {pokemonId: this.pokemon.id, fetchEvolution: true});
+    } catch(err) {
+      this.$buefy.snackbar.open({
+        indefinite: true,
+        message: `Could not get more informations about ${this.pokemon.name} species.`,
+        type: 'is-danger',
+        position: 'is-bottom',
+      });
+    }
     this.loading = false;
   }
 }

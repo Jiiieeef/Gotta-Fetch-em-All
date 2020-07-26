@@ -50,32 +50,44 @@ export const actions: ActionTree<IPokemonsState, RootState>  = {
   },
 
   async fetchPokemon(context, pokemonId: number) {
-    const pokemon = await this.$axios.$get(`${process.env.API_BASE_URL}/pokemon/${pokemonId}`);
+    try {
+      const pokemon = await this.$axios.$get(`${process.env.API_BASE_URL}/pokemon/${pokemonId}`);
 
-    return Pokemon.fromJson(pokemon);
+      return Pokemon.fromJson(pokemon);
+    } catch(err) {
+      throw new Error(err);
+    }
   },
 
   async fetchPokemonSpecies({ dispatch }, { pokemonId, fetchEvolution }: { pokemonId: number | string, fetchEvolution: boolean}) {
-    const species = await this.$axios.$get(`${process.env.API_BASE_URL}/pokemon-species/${pokemonId}`);
-    let json = species;
+    try {
+      const species = await this.$axios.$get(`${process.env.API_BASE_URL}/pokemon-species/${pokemonId}`);
+      let json = species;
 
-    if (fetchEvolution) {
-      const evolutionChain = await dispatch('fetchEvolutionChain', species.evolution_chain.url);
-      json = {
-        ...json,
-        evolution_chain: evolutionChain
-      };
+      if (fetchEvolution) {
+        const evolutionChain = await dispatch('fetchEvolutionChain', species.evolution_chain.url);
+        json = {
+          ...json,
+          evolution_chain: evolutionChain
+        };
+      }
+
+      const pokemon = PokemonSpecies.fromJson(json);
+
+      return pokemon;
+    } catch(err) {
+      throw new Error(err);
     }
-
-    const pokemon = PokemonSpecies.fromJson(json);
-
-    return pokemon;
   },
 
   async fetchEvolutionChain(context, evolutionChainUrl: string) {
-    const evolutionChain = await this.$axios.$get(evolutionChainUrl);
+    try {
+      const evolutionChain = await this.$axios.$get(evolutionChainUrl);
 
-    return PokemonSpecies.evolutionChainParser(evolutionChain);
+      return PokemonSpecies.evolutionChainParser(evolutionChain);
+    } catch(err) {
+      throw new Error(err);
+    }
   }
 };
 
