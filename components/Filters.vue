@@ -1,23 +1,28 @@
 <template>
-  <div>
-    <b-field label="Search by name or ID">
-      <b-input v-model="search" type="search" icon="magnify" />
-    </b-field>
+  <section>
+    <b-collapse :open="false" aria-id="showFilters">
+      <button slot="trigger" class="button is-primary" aria-controls="showFilters">
+        Toggle filters
+      </button>
+      <b-field label="Search by name or ID">
+        <b-input v-model="search" type="search" icon="magnify" />
+      </b-field>
 
-    <b-field label="Select types (only two types can be selected at once)">
-      <div class="types-container">
-        <span
-          v-for="type in types"
-          :key="type"
-          :class="{selected: selectedTypes.includes(type)}"
-          class="type"
-          @click="onClickType(type)"
-        >
-          <TagType :type="type" />
-        </span>
-      </div>
-    </b-field>
-  </div>
+      <b-field label="Select types (only two types can be selected at once)">
+        <div class="types-container">
+          <span
+            v-for="type in types"
+            :key="type"
+            :class="{selected: selectedTypes.includes(type)}"
+            class="type"
+            @click="onClickType(type)"
+          >
+            <TagType :type="type" />
+          </span>
+        </div>
+      </b-field>
+    </b-collapse>
+  </section>
 </template>
 
 <script>
@@ -67,20 +72,24 @@ export default {
 </script>
 
 <style lang="scss">
-  .types-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-bottom: 15px;
+  section {
+    margin-bottom: 10px;
 
-    .type {
-      cursor: pointer;
-      margin-right: 10px;
-      margin-bottom: 10px;
+    .types-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-bottom: 15px;
 
-      &.selected, &:hover {
-        span {
-          border: 1px solid black;
+      .type {
+        cursor: pointer;
+        margin-right: 10px;
+        margin-bottom: 10px;
+
+        &.selected, &:hover {
+          span {
+            border: 1px solid black;
+          }
         }
       }
     }
