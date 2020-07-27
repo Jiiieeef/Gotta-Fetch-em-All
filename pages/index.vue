@@ -1,24 +1,8 @@
 <template>
   <section class="section">
-    <b-field label="Search by name or ID">
-      <b-input v-model="search" type="search" icon="magnify" />
-    </b-field>
+    <Filters />
 
-    <b-field label="Select types (only two types can be selected at once)">
-      <div class="types-container">
-        <span
-          v-for="type in types"
-          :key="type"
-          :class="{selected: selectedTypes.includes(type)}"
-          class="type"
-          @click="onClickType(type)"
-        >
-          <TagType :type="type" />
-        </span>
-      </div>
-    </b-field>
-
-    <p v-if="(search || selectedTypes.length) && !pokemons.length">
+    <p v-if="(useFilters || selectedTypes.length) && !pokemons.length">
       No pokémons correspondig to your research.
       <a v-if="!preventLoadingMorePokemon" href="#" class="manual-load-more-pokemons" @click="loadMorePokemons">Load more pokémons</a>
     </p>
@@ -42,9 +26,9 @@
 <script>
 import { mapGetters } from 'vuex';
 
+import Filters from '~/components/Filters.vue';
 import PokemonCard from '~/components/PokemonCard.vue';
 import PokeballLoader from '~/components/PokeballLoader.vue';
-import TYPES_COLOR_MAPPING from '~/entities/typesColors';
 
 const SCROLL_OFFSET = 500;
 
@@ -53,7 +37,8 @@ export default {
 
   components: {
     PokemonCard,
-    PokeballLoader
+    PokeballLoader,
+    Filters
   },
 
   data() {
@@ -72,22 +57,9 @@ export default {
       return this.allPokemonArefetch || this.isLoading;
     },
 
-    search: {
-      set(searchFilter) {
-        this.$store.commit('pokemons/SET_SEARCH_FILTER', searchFilter);
-      },
-
-      get() {
-        return this.$store.getters['pokemons/searchFilter'];
-      }
-    },
-
-    selectedTypes() {
-      return this.$store.getters['pokemons/selectedTypes'];
-    },
-
-    types() {
-      return Object.keys(TYPES_COLOR_MAPPING);
+    useFilters() {
+      return this.$store.getters['pokemons/searchFilter'] ||
+             this.$store.getters['pokemons/selectedTypes'];
     }
   },
 
@@ -114,22 +86,6 @@ export default {
       this.isLoading = true;
       await this.$store.dispatch('pokemons/fetchPokemons');
       this.isLoading = false;
-    },
-
-    onClickType(type) {
-      let selectedTypes = [...this.selectedTypes];
-
-      if (selectedTypes.includes(type)) {
-        selectedTypes = selectedTypes.filter(_type => _type !== type);
-      } else {
-        if (selectedTypes.length === 2) {
-          selectedTypes.shift();
-        }
-
-        selectedTypes.push(type);
-      }
-
-      this.$store.commit('pokemons/SET_SELECTED_TYPES', selectedTypes);
     }
   }
 };
@@ -154,24 +110,4 @@ export default {
     font-weight: bold;
     cursor: pointer;
   }
-
-  .types-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-bottom: 15px;
-
-    .type {
-      cursor: pointer;
-      margin-right: 10px;
-      margin-bottom: 10px;
-
-      &.selected, &:hover {
-        span {
-          border: 1px solid black;
-        }
-      }
-    }
-  }
-
 </style>
